@@ -69,6 +69,7 @@ class RedisSimulationCommunication:
             del self.pubsub
             return
         self.heartbeat = RepeatingTimer(HeartBeat.RATE, self.heartbeat_tick)
+        print(f"self.heartbeat: {self.heartbeat}")
         self.heartbeat.start()
 
     def _subscribe_to_channels(self):
@@ -230,8 +231,11 @@ class RedisSimulationCommunication:
         self.redis_db.publish(channel, json.dumps(data))
 
     def heartbeat_tick(self):
+        print(f"heartbeat_tick")
         heartbeat_channel = f"{HeartBeat.CHANNEL_NAME}/{self._simulation_id}"
+        print(f"heartbeat_channel: {heartbeat_channel}")
         data = {"time": int(time.time())}
+        print(f"data: {data}")
         self.redis_db.publish(heartbeat_channel, json.dumps(data))
 
 
